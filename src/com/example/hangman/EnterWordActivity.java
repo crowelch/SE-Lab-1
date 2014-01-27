@@ -1,9 +1,16 @@
 package com.example.hangman;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,6 +38,7 @@ public class EnterWordActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.enter_word);
 		
+		
 		inputWord1 = (TextView) this.findViewById(R.id.inputWord1);
 		inputWord2 = (TextView) this.findViewById(R.id.inputWord2);
 		inputWord3 = (TextView) this.findViewById(R.id.inputWord3);
@@ -38,6 +46,9 @@ public class EnterWordActivity extends Activity {
 		score1Text = (TextView) this.findViewById(R.id.score1);
 		score2Text = (TextView) this.findViewById(R.id.score2);
 		score3Text = (TextView) this.findViewById(R.id.score3);
+		
+
+		checkHighScoresExist();
 		
 		Intent intent = getIntent();
 		finalScore = intent.getIntExtra("finalScore", 0);
@@ -74,15 +85,52 @@ public class EnterWordActivity extends Activity {
 			}
 		});
 	}
-	
+
+	private void checkHighScoresExist() {
+		String highscoreFilename = Environment.getExternalStorageDirectory() + "/highscores.txt";
+		File highscoreFile = new File(highscoreFilename);
+		if(highscoreFile.exists()) {
+			try {
+			BufferedReader bufferedReader = new BufferedReader(new FileReader(highscoreFile));
+
+			score1Text.setText("High score 1: " + bufferedReader.readLine().toString());
+			score2Text.setText("High score 2: " + bufferedReader.readLine().toString());
+			score3Text.setText("High score 3: " + bufferedReader.readLine().toString());
+			
+			bufferedReader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			FileWriter writer = null;
+			try {
+				writer = new FileWriter(highscoreFilename);
+				writer.append("0\n0\n0\n");
+				writer.flush();
+				writer.close();
+				
+				BufferedReader bufferedReader = new BufferedReader(new FileReader(highscoreFile));
+
+				score1Text.setText("High score 1: " + bufferedReader.readLine().toString());
+				score2Text.setText("High score 2: " + bufferedReader.readLine().toString());
+				score3Text.setText("High score 3: " + bufferedReader.readLine().toString());
+				
+				bufferedReader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	private void checkHighScores(int newScore) {
 		//read in highscores from textfile
 		//check newScore against existing high scores
 	}
-	
+/*
 	@Override
 	//Override to prevent users from going back to a game that ended
 	public void onBackPressed() {
+		super.onBackPressed();
 	}
-
+*/
 }
