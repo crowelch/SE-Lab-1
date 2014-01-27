@@ -42,6 +42,7 @@ public class EnterWordActivity extends Activity {
 		Intent intent = getIntent();
 		finalScore = intent.getIntExtra("finalScore", 0);
 		//TODO: CHECK finalScore AGAINST ALL OTHER HIGHSCORES
+		checkHighScores(finalScore);
 		//TODO: HAVE THEM INPUT THEIR NAME.
 		//TODO: SAVE THEIR HIGH SCORE HERE. 
 		
@@ -72,6 +73,11 @@ public class EnterWordActivity extends Activity {
 				}
 			}
 		});
+	}
+	
+	private void checkHighScores(int newScore) {
+		//read in highscores from textfile
+		//check newScore against existing high scores
 	}
 	
 	@Override
