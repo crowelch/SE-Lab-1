@@ -81,7 +81,7 @@ public class EnterWordActivity extends Activity {
 					intent.putExtra("word1", word1);
 					intent.putExtra("word2", word2);
 					intent.putExtra("word3", word3);
-					intent.putExtra("previousScore", 0);
+//					intent.putExtra("previousScore", 0);
 					startActivity(intent);
 				} else { // Toast error for empty word
 					Context context = getApplicationContext();

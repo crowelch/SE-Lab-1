@@ -42,7 +42,7 @@ public class GameActivity extends Activity {
 
 	int incorrectGuessCount;
 
-	// Called when the game is over. Transitions back to EnterWord Screen
+	// Called when the round ends. 
 	protected void endGame() {
 		// recursive base case
 		if (word2.matches("") && word3.matches("")) {
@@ -56,7 +56,7 @@ public class GameActivity extends Activity {
 			newRound.putExtra("word1", word2);
 			newRound.putExtra("word2", word3);
 			newRound.putExtra("word3", "");
-			newRound.putExtra("previousScore", 0);
+			newRound.putExtra("previousScore", previousScore + score);
 
 			startActivity(newRound);
 		}
@@ -197,6 +197,11 @@ public class GameActivity extends Activity {
 				Toast.makeText(getApplicationContext(),
 						"Sorry,  no new high score :(", Toast.LENGTH_LONG)
 						.show();
+				
+				//Start new game
+				Intent goToStartActivity = new Intent(GameActivity.this,
+						EnterWordActivity.class);
+				startActivity(goToStartActivity);
 			}
 		} else {
 			Toast.makeText(getApplicationContext(),
