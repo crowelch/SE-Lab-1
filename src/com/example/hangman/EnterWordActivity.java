@@ -54,12 +54,13 @@ public class EnterWordActivity extends Activity {
 		score2Text = (TextView) this.findViewById(R.id.score2);
 		score3Text = (TextView) this.findViewById(R.id.score3);
 
+		//Check that the file exists, output info if does, default info otherwise
 		checkHighScoresExist();
 
-		Intent intent = getIntent();
-		finalScore = intent.getIntExtra("finalScore", 0);
+		//Intent intent = getIntent();
+		//finalScore = intent.getIntExtra("finalScore", 0);
+		
 		// TODO: CHECK finalScore AGAINST ALL OTHER HIGHSCORES
-		// checkHighScores(finalScore);
 		// TODO: HAVE THEM INPUT THEIR NAME.
 		// TODO: SAVE THEIR HIGH SCORE HERE.
 
@@ -137,151 +138,10 @@ public class EnterWordActivity extends Activity {
 		}
 	}
 
-	private void checkHighScores(int newScore) {
-		File highscoreFile = new File(highscoreFilename);
-		int highscore1 = 0;
-		int highscore2 = 0;
-		int highscore3 = 0;
-
-		// read in highscores from textfile
-		if (highscoreFile.exists()) {
-			try {
-				BufferedReader bufferedReader = new BufferedReader(
-						new FileReader(highscoreFile));
-
-				// Bypass names
-				bufferedReader.readLine();
-				highscore1 = Integer.parseInt(bufferedReader.readLine()
-						.toString());
-				bufferedReader.readLine();
-				highscore2 = Integer.parseInt(bufferedReader.readLine()
-						.toString());
-				bufferedReader.readLine();
-				highscore3 = Integer.parseInt(bufferedReader.readLine()
-						.toString());
-
-				bufferedReader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			if (newScore > highscore1) {
-				highscorePopup(newScore, 1, ">");
-			} else if (newScore == highscore1) {
-				highscorePopup(newScore, 1, "=");
-			} else if (newScore > highscore2) {
-				highscorePopup(newScore, 2, ">");
-			} else if (newScore == highscore2) {
-				highscorePopup(newScore, 2, "=");
-			} else if (newScore > highscore3) {
-				highscorePopup(newScore, 3, ">");
-			} else if (newScore == highscore3) {
-				highscorePopup(newScore, 3, "=");
-			} else {
-				// no new highscore
-				Toast.makeText(getApplicationContext(),
-						"Sorry,  no new high score :(", Toast.LENGTH_LONG)
-						.show();
-			}
-		} else {
-			Toast.makeText(getApplicationContext(),
-					"Error: high scores file does not exist",
-					Toast.LENGTH_SHORT).show();
-		}
-		// check newScore against existing high scores
-	}
-
-	/***
-	 * Popup to ask player to enter their name if they received a new high score
-	 * 
-	 * @param newScore
-	 * @param whichScore
-	 * @param place
-	 */
-	private void highscorePopup(final int newScore, final int whichScore,
-			final String place) {
-		LayoutInflater factory = LayoutInflater.from(this);
-		final View popup = factory.inflate(R.layout.default_popup, null);
-		AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-		alertBuilder.setCancelable(false).setTitle("High Scores")
-				.setView(popup)
-				.setMessage("Congratulations you got a high score!")
-				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						EditText nameText = (EditText) findViewById(R.id.setNameEditText);
-						updateScores(nameText.getText().toString(), newScore,
-								whichScore, place);
-
-					}
-				});
-
-		AlertDialog alertdialog = alertBuilder.create();
-		alertdialog.show();
-	}
-
-	private void updateScores(String name, int newScore, int whichScore,
-			String place) {
-		ArrayList<String> arList = new ArrayList<String>();
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(
-					highscoreFilename));
-			arList.add(br.readLine());
-			arList.add(br.readLine());
-			arList.add(br.readLine());
-			arList.add(br.readLine());
-			arList.add(br.readLine());
-			arList.add(br.readLine());
-			br.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		switch (whichScore) {
-		case 1:
-			if (place.matches(">")) {
-				arList.set(0, name);
-				arList.set(1, Integer.toString(newScore));
-			} else {
-				arList.set(2, name);
-				arList.set(3, Integer.toString(newScore));
-			}
-			break;
-		case 2:
-			if (place.matches(">")) {
-				arList.set(2, name);
-				arList.set(3, Integer.toString(newScore));
-			} else {
-				arList.set(4, name);
-				arList.set(5, Integer.toString(newScore));
-			}
-			break;
-		case 3:
-			if (place.matches(">")) {
-				arList.set(4, name);
-				arList.set(5, Integer.toString(newScore));
-			} else {
-				arList.set(4, name);
-				arList.set(5, Integer.toString(newScore));
-			}
-			break;
-		}
-		try {
-			FileWriter highscoreUpdater = new FileWriter(highscoreFilename);
-			highscoreUpdater.append(arList.get(0) + "\n" + arList.get(1) + "\n"
-					+ arList.get(2) + "\n" + arList.get(3) + "\n"
-					+ arList.get(4) + "\n" + arList.get(5) + "\n");
-			highscoreUpdater.flush();
-			highscoreUpdater.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	@Override
+	// Override to prevent users from going back to a game thatended
+	public void onBackPressed() {
 
 	}
-	/*
-	 * 
-	 * @Override //Override to prevent users from going back to a game that
-	 * ended public void onBackPressed() { super.onBackPressed(); }
-	 */
+
 }
