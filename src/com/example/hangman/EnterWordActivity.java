@@ -57,13 +57,6 @@ public class EnterWordActivity extends Activity {
 		//Check that the file exists, output info if does, default info otherwise
 		checkHighScoresExist();
 
-		//Intent intent = getIntent();
-		//finalScore = intent.getIntExtra("finalScore", 0);
-		
-		// TODO: CHECK finalScore AGAINST ALL OTHER HIGHSCORES
-		// TODO: HAVE THEM INPUT THEIR NAME.
-		// TODO: SAVE THEIR HIGH SCORE HERE.
-
 		goButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
